@@ -27,7 +27,7 @@ export default function App() {
           name='Onboarding'
           component={Onboard}
           options={{
-            headerShown: true,
+            headerShown: false,
             
           }}
         />
