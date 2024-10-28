@@ -1,6 +1,7 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Appbar, TextInput, Button } from "react-native-paper";
+import TopHeader from "../../widgets/TopHeader";
 
 export default function CreatePersonnelScreen({ navigation }) {
   const [teamName, setTeamName] = useState("");
@@ -10,14 +11,7 @@ export default function CreatePersonnelScreen({ navigation }) {
   return (
     <View style={styles.container}>
       {/* Header */}
-      <Appbar.Header style={styles.header}>
-        <Appbar.BackAction onPress={() => navigation.goBack()} />
-        <Appbar.Content
-          title="Create Personnel"
-          titleStyle={styles.headerTitle}
-        />
-        <Appbar.Action icon="menu" onPress={() => {}} />
-      </Appbar.Header>
+      <TopHeader headerTitle="Create Personnel" navigation={navigation} />
 
       {/* Form Inputs */}
       <View style={styles.form}>
@@ -65,14 +59,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFFFFF",
-  },
-  header: {
-    backgroundColor: "#FFFFFF",
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
   },
   form: {
     flex: 1,

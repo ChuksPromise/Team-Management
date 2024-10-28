@@ -4,50 +4,65 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons';
 
 function Home_Screen({ navigation }) {
      return (
-          <View style={styles.container}>
-               {/* Top image background */}
-               <ImageBackground
-                    // source={{ uri: 'https://example.com/image.jpg' }}
-                    source={require('../../assets/homepage-header.png')}
-                    style={styles.headerBackground}
-                    imageStyle={{ borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}
-               >
-                    <View style={styles.headerContent}>
-                         {/* Sidebar icon */}
-                         <TouchableOpacity style={styles.iconButton} onPress={() => navigation.toggleDrawer()}>
-                              <Ionicons name="menu-outline" size={30} color="#FFCC00" />
-                         </TouchableOpacity>
+       <View style={styles.container}>
+         {/* Top image background */}
+         <ImageBackground
+           // source={{ uri: 'https://example.com/image.jpg' }}
+           source={require("../../assets/homepage-header.png")}
+           style={styles.headerBackground}
+           imageStyle={{
+             borderBottomLeftRadius: 30,
+             borderBottomRightRadius: 30,
+           }}
+         >
+           <View style={styles.headerContent}>
+             {/* Sidebar icon */}
+             <TouchableOpacity
+               style={styles.iconButton}
+               onPress={() => navigation.toggleDrawer()}
+             >
+               <Ionicons name="menu-outline" size={30} color="#FFCC00" />
+             </TouchableOpacity>
 
-                         {/* Notification and user info */}
-                         <View style={styles.userInfo}>
-                              <FontAwesome name="bell" size={24} color="white" />
+             {/* Notification and user info */}
+             <View style={styles.userInfo}>
+               <FontAwesome name="bell" size={24} color="white" />
 
-                              <Image
-                                   source={require('../../assets/icon.png')}
-                                   style={{ width: 30, height: 30, borderRadius: 100 }}
-                              />
+               <Image
+                 source={require("../../assets/icon.png")}
+                 style={{ width: 30, height: 30, borderRadius: 100 }}
+               />
 
-                              <Text style={styles.userName}>Esther</Text>
-                         </View>
-                    </View>
-               </ImageBackground>
+               <Text style={styles.userName}>Esther</Text>
+             </View>
+           </View>
+         </ImageBackground>
 
-               {/* Task and Personnel buttons */}
-               <View style={styles.buttonsContainer}>
-                    <TouchableOpacity style={styles.button}>
-                         <Text style={styles.buttonText}>Create Task</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
-                         <Text style={styles.buttonText}>Manage Task</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
-                         <Text style={styles.buttonText}>Create Personnel</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
-                         <Text style={styles.buttonText}>Manage Personnel</Text>
-                    </TouchableOpacity>
-               </View>
-          </View>
+         {/* Task and Personnel buttons */}
+         <View style={styles.buttonsContainer}>
+           <TouchableOpacity
+             style={styles.button}
+             onPress={() => navigation.navigate("Create Task")}
+           >
+             <Text style={styles.buttonText}>Create Task</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.button}
+             onPress={() => navigation.navigate("Manage Task")}
+           >
+             <Text style={styles.buttonText}>Manage Task</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.button}
+             onPress={() => navigation.navigate("Create Personnel")}
+           >
+             <Text style={styles.buttonText}>Create Personnel</Text>
+           </TouchableOpacity>
+           <TouchableOpacity style={styles.button} onPress={() => {}}>
+             <Text style={styles.buttonText}>Manage Personnel</Text>
+           </TouchableOpacity>
+         </View>
+       </View>
      );
 }
 

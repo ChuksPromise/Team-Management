@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import TopHeader from "../../widgets/TopHeader";
 
 function Create_Task_Screen({ navigation }) {
   const [startTime, setStartTime] = useState(new Date());
@@ -30,15 +31,7 @@ function Create_Task_Screen({ navigation }) {
   return (
     <View style={styles.container}>
       {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>Create Task</Text>
-        <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-          <Ionicons name="menu" size={24} color="yellow" />
-        </TouchableOpacity>
-      </View>
+      <TopHeader headerTitle="Create Task" navigation={navigation} />
 
       {/* Task Form */}
       <View style={styles.form}>
@@ -120,17 +113,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: "#fff",
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 50,
-    marginBottom: 20,
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: "bold",
   },
   form: {
     flex: 1,
