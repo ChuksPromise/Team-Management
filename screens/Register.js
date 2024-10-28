@@ -1,66 +1,143 @@
-import { useNavigation } from '@react-navigation/native';
-import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { CustomTextField } from '../widgets/CustomTextField';
-import PrimaryButton from '../widgets/PrimaryButton';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import FormBgContainer from '../widgets/FormBgContainer';
 
-const Register = () => {
-
-   const navigation = useNavigation();
+export default function Register({ navigation }) {
+   const [email, setEmail] = useState('');
+   const [password, setPassword] = useState('');
+   const [confirmPassword, setConfirmPassword] = useState('');
 
    return (
-       <View>
-          <View style={styles.loginSec}>
-             <CustomTextField placeholder={"Email"} keyboardType={"email-address"}/>
-             <CustomTextField placeholder={"Password"} keyboardType={"visible-password"} secureText={true}/>
-             <CustomTextField placeholder={"Confirm Password"} keyboardType={"visible-password"} secureText={true}/>
-             <PrimaryButton>
-                <Text>
-                   Register
-                </Text>
-             </PrimaryButton>
-              
-             <View style={styles.acctClick}>
-                <Text style={styles.acctClickText}>
-                   Already have an acccount
-                </Text>
-                <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                   <Text style={styles.regText}>
-                      Login
-                   </Text>
-                </TouchableOpacity>
-             </View>
-          </View>
-       </View>
-   )
+     <View style={styles.container}>
+       <FormBgContainer>
+         {/* Email Input */}
+         <View style={styles.inputContainer}>
+           <Ionicons
+             name="call-outline"
+             size={20}
+             color="#0026ff"
+             style={styles.icon}
+           />
+           <TextInput
+             style={styles.input}
+             placeholder="Email"
+             placeholderTextColor="#00000083"
+             value={email}
+             onChangeText={setEmail}
+           />
+         </View>
+
+         {/* Password Input */}
+         <View style={styles.inputContainer}>
+           <Ionicons
+             name="eye-off-outline"
+             size={20}
+             color="#0026ff"
+             style={styles.icon}
+           />
+           <TextInput
+             style={styles.input}
+             placeholder="Password"
+             placeholderTextColor="#00000083"
+             value={password}
+             onChangeText={setPassword}
+             secureTextEntry={true}
+           />
+         </View>
+
+         {/* Confirm Password Input */}
+         <View style={styles.inputContainer}>
+           <Ionicons
+             name="eye-off-outline"
+             size={20}
+             color="#0026ff"
+             style={styles.icon}
+           />
+           <TextInput
+             style={styles.input}
+             placeholder="Confirm Password"
+             placeholderTextColor="#00000083"
+             value={confirmPassword}
+             onChangeText={setConfirmPassword}
+             secureTextEntry={true}
+           />
+         </View>
+
+         {/* Log In Button */}
+         <TouchableOpacity style={styles.button}>
+           <Text style={styles.buttonText}>Register</Text>
+         </TouchableOpacity>
+
+         {/* Forget Password and Register Links */}
+         <TouchableOpacity
+           onPress={() => navigation.navigate("Forget-Password")}
+         >
+           <Text style={styles.forgetPasswordText}>Forget Password?</Text>
+         </TouchableOpacity>
+
+         <View style={styles.registerTextContainer}>
+           <Text style={styles.registerPrompt}>Already have an account? </Text>
+           <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+             <Text style={styles.registerLink}>Login</Text>
+           </TouchableOpacity>
+         </View>
+       </FormBgContainer>
+     </View>
+   );
 }
 
-export default Register
-
+// Styles
 const styles = StyleSheet.create({
-   loginSec:{
-      // height: "50%",
-      backgroundColor: "#0414c0",
-      marginHorizontal: 5,
-      borderRadius: 20,
-      paddingVertical: 20,
-      paddingHorizontal: 10,
-      paddingVertical: 50
+   container: {
+      // flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#fff',
    },
-   acctClick:{
-      flexDirection: "row",
-      justifyContent: "center",
-      alignItems: "center"
+   inputContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: '#ffffff',
+      marginVertical: 10,
+      paddingHorizontal: 9,
+      borderRadius: 9
    },
-   acctClickText:{
-      color: "white",
-      fontSize: 17
+   icon: {
+      marginRight: 10,
    },
-   regText:{
-      fontSize: 17,
-      color: "white",
-      fontWeight: "900",
-      textDecorationLine:'underline',
-      textDecorationStyle: 'solid',
-   }
-}) 
+   input: {
+      flex: 1,
+      color: '#000',
+      fontSize: 16,
+      paddingVertical: 15,
+   },
+   button: {
+      backgroundColor: '#ffc107', // Yellow button
+      paddingVertical: 15,
+      borderRadius: 10,
+      alignItems: 'center',
+      marginVertical: 15,
+   },
+   buttonText: {
+      color: '#fff',
+      fontSize: 16,
+      fontWeight: 'bold',
+   },
+   forgetPasswordText: {
+      color: '#fff',
+      textAlign: 'right',
+      marginBottom: 20,
+   },
+   registerTextContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+   },
+   registerPrompt: {
+      color: '#fff',
+   },
+   registerLink: {
+      color: '#ffc107', // Yellow for the register link
+   },
+});

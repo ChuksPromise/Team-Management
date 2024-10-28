@@ -1,113 +1,203 @@
-import { useNavigation } from '@react-navigation/native'
-import React from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import NextButton from '../widgets/NextButton';
+import React, { useRef, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import {
+  ScrollView,
+  View,
+  Text,
+  Dimensions,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import { Button } from "react-native-paper";
+
+const { width, height } = Dimensions.get("window");
 
 const Onboard = () => {
-   const navigation = useNavigation();
+  const navigation = useNavigation();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isButtonPressed, setIsButtonPressed] = useState(false);
+  const scrollViewRef = useRef(null);
+
+  const sections = [
+    {
+      title: "Welcome To ValueMax Team Management Application (VTMA)",
+      description:
+        "We're glad to have you onboard. Our app is designed to help you keep track of your schedule and manage your time more efficiently.",
+      image: require("../assets/onboard.png"), // Update with your illustration asset
+    },
+    {
+      title: "Organize & Manage Effortlessly",
+      description:
+        "Thank you for choosing our time management app to help you stay organized and productive.",
+      image: require("../assets/onboard.png"), // Another illustration if available
+    },
+  ];
+
+  const nextSlide = () => {
+    if (currentIndex < sections.length - 1) {
+      const nextIndex = currentIndex + 1;
+      setIsButtonPressed(true);
+      scrollViewRef.current.scrollTo({ x: width * nextIndex, animated: true });
+      setCurrentIndex(nextIndex);
+    } else {
+      navigation.navigate("Login");
+    }
+  };
+
+  const handleScroll = (event) => {
+    if (!isButtonPressed) {
+      const newIndex = Math.round(event.nativeEvent.contentOffset.x / width);
+      setCurrentIndex(newIndex);
+    }
+  };
+
+  const handleScrollEnd = () => {
+    setIsButtonPressed(false);
+  };
 
   return (
     <View style={styles.container}>
-      <View style={styles.imageBox}>
-         <Text>
-            onboard
-         </Text>
-         <Image 
-            source={require('../assets/onboard.png')}
-         
-            // source={{ 
-            //    // uri: 'https://s3-alpha-sig.figma.com/img/4942/0998/5411d4a9bbcbdd91edb9e550c2ef42f2?Expires=1729468800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=po-ZVMxtTmZEplpH7mL6~U-~OZYK8xu9ziUqTh-aUbO2v452xyqvdsfnPsDL823pKhYwBw6xkPxMDClHpw7BLzPOy9C5tkud2gf1c9Jf~g8aHmISY6RuFcxPF0gi~zBlDmmnOCPeg60-qfaH~JQAVqWCKZ3kmleoN889iSj5OXCBvxohJThCek6GmE7nFuIUWsSjMUUsKDWNzAH0PCX~wUe9w3RhEPMyL7nsvEhv7uh5E-ak9gjVvpSrxAgJ6uxTt9Fyi-ewfkhC1n8dNX8m3ouE2G5eUSBkZh3uiZK~B0Eh5y2cv~P~TgbfX5u3IVM0Re-zf4W5exLZYQDau2jirQ__' 
-            //    // uri: 'https://img.freepik.com/free-vector/partnership-illustration-two-caucasian-girls-working-together-business-partners-partnership-good-job-recognition-women-friends-characters_575670-1503.jpg?t=st=1728503232~exp=1728506832~hmac=2f06b17769ed81340981aee1bbc9ed33763d036ed7f87870b07bee4b6337441a&w=740' 
-            // }}  
-            style={styles.imageStyle}
-            
+      <ScrollView
+        horizontal
+        pagingEnabled
+        ref={scrollViewRef}
+        onScroll={handleScroll}
+        onMomentumScrollEnd={handleScrollEnd}
+        showsHorizontalScrollIndicator={false}
+        scrollEventThrottle={16}
+      >
+        {sections.map(({ title, description, image }, index) => (
+          <View key={index} style={styles.slide}>
+            <View style={styles.imageBox}>
+              <Image source={image} style={styles.imageStyle} />
+            </View>
+            <View style={styles.blueSection}>
+              <Text style={styles.upperBigText}>{title}</Text>
+              <Text style={styles.upperLowerText}>{description}</Text>
+            </View>
+          </View>
+        ))}
+      </ScrollView>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <Text style={styles.skipText}>Skip</Text>
+        </TouchableOpacity>
+        <View style={styles.dotsContainer}>
+          {sections.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.dot,
+                currentIndex === index ? styles.activeDot : styles.inactiveDot,
+              ]}
             />
-         
-
-         {/* <CustomTextField placeholder={"Your name Please"} keyboardType={"email-address"}/> */}
-      </View>
-
-      <View style={styles.blueSection}>
-         <View style={styles.blueUpper}>
-            <Text style={styles.upperBigText}>
-               Welcome To Valuemax Team
-            </Text>
-            <Text style={styles.upperLowerText}>
-               We're glad to have you onboard. Our App is 
-               designed to help you keep track of your 
-               shcedule and manage your time more efficiently. 
-            </Text>
-         </View>
-
-         <View style={styles.blueLower}>
-            <Text style={styles.lowerText}>
-               Skip
-            </Text>
-            <NextButton onPress={() => navigation.navigate("Login")}>
-               <Text>
-                  Next
-               </Text>
-            </NextButton>
-         </View>
+          ))}
+        </View>
+        <Button
+          mode="contained"
+          onPress={nextSlide}
+          contentStyle={styles.nextButtonContent}
+          style={styles.nextButton}
+          labelStyle={styles.nextButtonText}
+        >
+          {currentIndex === sections.length - 1 ? "Get Started" : "Next"}
+        </Button>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default Onboard
-
+export default Onboard;
 
 const styles = StyleSheet.create({
-   container:{
-      height: "100%",
-      justifyContent: "space-between",
-      alignItems: "center"
-   },
-   imageBox:{
-      height: "50%",
-      // backgroundColor: "gold"
-   },
-   imageStyle:{
-      height: "100%",
-   },
-   blueSection:{
-      height: "50%",
-      width: "100%",
-      backgroundColor: "#0414c0",
-      color: "white",
-      paddingVertical: 30,
-      paddingHorizontal: 10,
-      justifyContent: "space-between",
-   },
-   blueUpper:{
-      // textAlign: "center",
-      // width: "50%",
-      alignItems: "center"
-   },
-   upperBigText:{
-      textAlign: "center",
-      fontSize: 40,
-      width: "60%",
-      color: "white",
-      fontWeight: 'bold',
-      marginVertical: 10
-   },
-   upperLowerText:{
-      textAlign: "center",
-      fontSize: 20,
-      width: "80%",
-      color: "white",
-      marginVertical: 10
-   },
-   blueLower:{
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginTop: 20
-   },
-   lowerText:{
-      color: "white",
-      fontSize: 20
-   }
-
-})
+  container: {
+    flex: 1,
+    backgroundColor: "#ffffff",
+  },
+  slide: {
+    width,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  imageBox: {
+    width: "100%",
+    height: "65%", // Adjusted height to match illustration spacing
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  imageStyle: {
+    width: "100%", // Slightly reduced to center-align within padding
+    height: "70%",
+    resizeMode: "contain",
+  },
+  blueSection: {
+    height: "35%",
+    width: "100%",
+    backgroundColor: "#0414c0",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  upperBigText: {
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "white",
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  upperLowerText: {
+    fontSize: 15,
+    color: "white",
+    textAlign: "center",
+    paddingHorizontal: 10,
+    lineHeight: 22,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    backgroundColor: "#0414c0",
+    paddingVertical: 10,
+  },
+  skipText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  dotsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginHorizontal: 4,
+    backgroundColor: "#aaa",
+  },
+  activeDot: {
+    borderRadius: 10,
+    width: 15,
+    height: 15,
+    backgroundColor: "#fff",
+  },
+  inactiveDot: {
+    backgroundColor: "#aaa",
+  },
+  nextButton: {
+    backgroundColor: "#FFC107",
+    borderRadius: 8,
+    paddingVertical: 4,
+  },
+  nextButtonContent: {
+    paddingHorizontal: 7,
+  },
+  nextButtonText: {
+    color: "#ffffff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+});

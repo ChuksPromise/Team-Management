@@ -1,29 +1,21 @@
-import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 
-export const CustomTextField = ({
-    placeholder,
-    keyboardType,
-    secureText
-  }) => {
-
-  const navigation = useNavigation()
+export const CustomTextField = (props) => {
 
   return (
-      <View>
-        <TextInput
-        style={styles.input}
-          placeholder={placeholder}
-          keyboardType={keyboardType || 'default'}
-          secureTextEntry={secureText}
-        />
-      </View>
+    <View>
+      <TextInput
+        style={props.style || styles.input}
+        keyboardType={props.keyboardType || 'default'}
+        {...props}
+      />
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-  input:{
+  input: {
     backgroundColor: "white",
     paddingVertical: 10,
     paddingHorizontal: 10,
